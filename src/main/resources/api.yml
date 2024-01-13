@@ -1,0 +1,144 @@
+openapi: "3.0.3"
+info:
+  title: Swagger Bkool
+  description: Api Bkool
+  version: 1.0.0
+servers:
+  - url: http:localhost:8080
+paths:
+  /bike:
+    post:
+      tags:
+        - bike
+      summary: Create a Bike with form data
+      operationId: createBike
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BikeDTO'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BikeDTO'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResource'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResource'
+  /bike/list:
+    post:
+      tags:
+        - bike
+      summary: Get a list of bikes by a filter
+      operationId: getBikesByFilter
+      parameters:
+        - in: query
+          name: orderByName
+          description: Order the bikes by name, ascendant or descentand.
+          schema:
+            type: string
+            example: asc
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FilterDTO'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BikeDTO'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResource'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResource'
+
+components:
+  schemas:
+    BikeDTO:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          example: bike name
+        description:
+          type: string
+          example: description
+        price:
+          type: number
+          format: double
+          example: 1400.52
+          minimum: 1
+        manufacturer:
+          type: string
+          example: bike name
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemDTO'
+      required:
+        - name
+    ItemDTO:
+      type: object
+      properties:
+        id:
+          type: string
+        model:
+          type: string
+          example: model
+        type:
+          type: string
+          example: type
+        description:
+          type: string
+          example: description
+      required:
+        - model
+        - type
+    FilterDTO:
+      type: object
+      properties:
+        name:
+          type: string
+          example: bike name
+        manufacturer:
+          type: string
+          example: bike name
+        type:
+          type: string
+          example: type
+    ErrorResource:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string

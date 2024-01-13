@@ -1,0 +1,32 @@
+
+version: "3"
+services:
+
+  db:
+    image: postgres:latest
+    container_name: db
+    environment:
+      POSTGRES_DB: bkool_db
+      POSTGRES_USER: myadmin
+      POSTGRES_PASSWORD: myadmin
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  bkool-pruebatecnica:
+    image: bkool-pruebatecnica:latest
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    links:
+      - db
+#  services:
+#    redis:
+#      image: 'redis:latest'
+#      ports:
+#        - '6379'
+volumes:
+  postgres_data:
