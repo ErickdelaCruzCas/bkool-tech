@@ -11,3 +11,13 @@ spring:
 #    url: "jdbc:postgresql://db:5432/bkool_db"
     username: myadmin
     password: myadmin
+  cache:
+    type: redis
+  redis:
+    host: localhost
+    port: 6379
+cache:
+  config:
+    entryTtl: 60
+    bike:
+      entrtyTtl: 30
