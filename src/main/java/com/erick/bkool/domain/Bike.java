@@ -1,4 +1,4 @@
-package com.erick.bkool.model;
+package com.erick.bkool.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+
 import java.util.List;
 
 @Data
@@ -14,13 +15,13 @@ import java.util.List;
 @Builder
 public class Bike {
 
-    private Integer id;
+    private String id;
     private String name;
     private String description;
     private Double price;
     private String manufacturer;
-    private LocalDateTime creation_date;
-    private LocalDateTime modification_date;
+    private LocalDateTime creationDate;
+    private LocalDateTime modificationDate;
     private List<Item> items;
 
 

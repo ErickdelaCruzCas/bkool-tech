@@ -1,7 +1,13 @@
 package com.erick.bkool.repository.adapters;
 
+import com.erick.bkool.domain.Bike;
+import com.erick.bkool.domain.Filter;
+import com.erick.bkool.ports.out.BikeRepositoryPort;
+import com.erick.bkool.repository.BikeMOJpaRepository;
+import com.erick.bkool.repository.mappers.BikeMOMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,29 +16,32 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class BikeRepositoryAdapter {
+public class BikeRepositoryAdapter implements BikeRepositoryPort {
 
-//        private final PricesListMOJpaRepository repository;
-//
-//        private final PricesListMOMapper mapper;
-//
-//        @Override
-//        public List<PricesList> getPricesListFromFilter(PricesListFilter pricesListFilter) {
-//                return repository.findPricesListByFilter(
-//                        pricesListFilter.getBrandId(),
-//                        pricesListFilter.getProductId(),
-//                        pricesListFilter.getApplicationDate()
-//                        ).stream()
-//                .map(mapper::fromModel)
-//                .collect(Collectors.toList());
-//        }
-//
-//        @Override
-//        public PricesList findPricesListById(Integer id) {
-//                return mapper.fromModel(repository.findById(id)
-//                        .orElseThrow(() -> new ResourceNotFoundException(
-//                        "The price was not found", 404)));
-//        }
+    public static final String PROPERTY_TO_SORT = "name";
+    public static final String ASC = "ASC";
+    private final BikeMOJpaRepository bikeMOJpaRepository;
+
+    private final BikeMOMapper bikeMOMapper;
+
+
+    @Override
+    public Bike saveBike(Bike bike) {
+        var bikeToSave = bikeMOMapper.fromDomain(bike);
+        bikeToSave.getItems().forEach(itemMO -> itemMO.setBikeMO(bikeToSave));
+        var bikeSaved = bikeMOJpaRepository.saveAndFlush(bikeToSave);
+        return bikeMOMapper.fromModel(bikeSaved);
+    }
+
+    @Override
+    public List<Bike> getBikesFiltered(Filter filter, String orderByName) {
+        var sort = orderByName.equalsIgnoreCase(ASC)
+            ? Sort.by(Sort.Direction.ASC, PROPERTY_TO_SORT)
+            : Sort.by(Sort.Direction.DESC, PROPERTY_TO_SORT);
+        var bikesFiltered = bikeMOJpaRepository.getBikesFiltered(filter.getName(), filter.getManufacturer(), filter.getType(),sort);
+        return bikesFiltered.stream().map(bikeMOMapper::fromModel).collect(Collectors.toList());
+    }
+
 
 }
 

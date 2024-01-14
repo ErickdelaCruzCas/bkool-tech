@@ -1,16 +1,17 @@
 package com.erick.bkool.repository.model;
 
-import com.erick.bkool.model.Bike;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UuidGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 
 @Data
@@ -23,11 +24,12 @@ import java.time.LocalDateTime;
 public class ItemMO {
 
     @Id
+    @UuidGenerator
     @Column(name = "id")
-    private Long id;
+    private String id;
 
     @ManyToOne
-    @JoinColumn(name="bike_id", nullable=false)
+    @JoinColumn(name="bike_id")
     private BikeMO bikeMO;
 
     @Column(name = "model")

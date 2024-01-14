@@ -1,13 +1,12 @@
-package com.erick.bkool.model;
+package com.erick.bkool.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Data
 @AllArgsConstructor
@@ -15,15 +14,13 @@ import java.time.LocalDateTime;
 @Builder
 public class Item {
 
-    private Integer id;
+    private String id;
     private Bike bike;
     private String model;
     private String type;
     private String description;
-    @CreatedDate
-    private LocalDateTime creation_date;
-    @LastModifiedDate
-    private LocalDateTime modification_date;
+    private LocalDateTime creationDate;
+    private LocalDateTime modificationDate;
 
 
 }

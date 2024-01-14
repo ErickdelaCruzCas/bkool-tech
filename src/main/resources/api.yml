@@ -61,7 +61,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BikeDTO'
+                type: array
+                items:
+                  $ref: '#/components/schemas/BikeDTO'
         '400':
           description: Bad Request
           content:
@@ -96,6 +98,12 @@ components:
         manufacturer:
           type: string
           example: bike name
+        creationDate:
+          type: string
+          format: date-time
+        modificationDate:
+          type: string
+          format: date-time
         items:
           type: array
           items:
@@ -116,6 +124,12 @@ components:
         description:
           type: string
           example: description
+        creationDate:
+          type: string
+          format: date-time
+        modificationDate:
+          type: string
+          format: date-time
       required:
         - model
         - type

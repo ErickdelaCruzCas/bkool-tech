@@ -1,17 +1,19 @@
 package com.erick.bkool.repository.model;
 
-import com.erick.bkool.model.Item;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UuidGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Data
@@ -24,8 +26,9 @@ import java.util.List;
 public class BikeMO {
 
     @Id
+    @UuidGenerator
     @Column(name = "id")
-    private Integer id;
+    private String id;
 
     @Column(name = "name")
     private String name;
@@ -39,7 +42,7 @@ public class BikeMO {
     @Column(name = "manufacturer")
     private String manufacturer;
 
-    @OneToMany(mappedBy="bikeMO")
+    @OneToMany(mappedBy="bikeMO", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ItemMO> items;
 
     @CreatedDate
